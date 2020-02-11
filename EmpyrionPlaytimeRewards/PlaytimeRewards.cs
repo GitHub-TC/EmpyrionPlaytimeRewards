@@ -1,16 +1,13 @@
 ﻿using Eleon.Modding;
 using EmpyrionNetAPIAccess;
-using EmpyrionNetAPITools;
 using EmpyrionNetAPIDefinitions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Collections.Concurrent;
-using System.Timers;
+using EmpyrionNetAPITools;
 using EmpyrionNetAPITools.Extensions;
+using System;
+using System.Collections.Concurrent;
+using System.IO;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace EmpyrionPlaytimeRewards
 {

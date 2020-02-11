@@ -2,8 +2,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace EmpyrionPlaytimeRewards
 {
