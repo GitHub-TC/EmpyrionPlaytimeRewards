@@ -1,3 +1,3 @@
 # EmpyrionPlaytimeRewards
 
-Get player a XP reward for every minutes playtime
+Give player a XP reward for every minutes playtime
