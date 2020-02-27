@@ -11,6 +11,35 @@ using System.Timers;
 
 namespace EmpyrionPlaytimeRewards
 {
+    public enum ExpLevel
+    {
+        L1 = 0,
+        L2 = 799,
+        L3 = 3199,
+        L4 = 7199,
+        L5 = 12799,
+        L6 = 20000,
+        L7 = 28799,
+        L8 = 39200,
+        L9 = 51199,
+        L10 = 64800,
+        L11 = 80000,
+        L12 = 96799,
+        L13 = 115199,
+        L14 = 135199,
+        L15 = 156800,
+        L16 = 180000,
+        L17 = 204799,
+        L18 = 231200,
+        L19 = 259200,
+        L20 = 288800,
+        L21 = 320000,
+        L22 = 352799,
+        L23 = 387199,
+        L24 = 423200,
+        L25 = 500000,
+    }
+
     public class PlaytimeRewards : EmpyrionModBase
     {
         public ModGameAPI GameAPI { get; set; }
@@ -68,8 +97,14 @@ namespace EmpyrionPlaytimeRewards
             var P = await Request_Player_Info(playerId.ToId());
             if (P.exp >= Configuration.Current.PlayerMaxXp) return;
 
-            Log($"PlayerGetPlaytimeReward: {P.playerName}/{P.steamId} -> {Configuration.Current.XpPerPeriod} XP");
-            await Request_Player_SetPlayerInfo(new PlayerInfoSet() { entityId = playerId, experiencePoints = P.exp + Configuration.Current.XpPerPeriod });
+            var nextExp = P.exp + Configuration.Current.XpPerPeriod;
+            if (GetExperienceLevel(P.exp) == GetExperienceLevel(nextExp)) {
+                Log($"PlayerGetPlaytimeReward: {P.playerName}/{P.steamId} -> {Configuration.Current.XpPerPeriod} XP");
+                await Request_Player_SetPlayerInfo(new PlayerInfoSet() { entityId = playerId, experiencePoints = nextExp });
+            }
+            else {
+                Log($"PlayerGetPlaytimeReward (hold for level switch to {GetExperienceLevel(nextExp)}): {P.playerName}/{P.steamId} -> {Configuration.Current.XpPerPeriod} XP");
+            }
         }
 
         private async Task DisplayHelp(int playerId)
@@ -84,6 +119,19 @@ namespace EmpyrionPlaytimeRewards
 
             Configuration.Load();
             Configuration.Save();
+        }
+
+        public ExpLevel GetExperienceLevel(int expPoints)
+        {
+            ExpLevel result = ExpLevel.L1;
+
+            foreach (ExpLevel level in System.Enum.GetValues(typeof(ExpLevel)))
+            {
+                if (expPoints < (int)level) break;
+                else                        result = level;
+            }
+
+            return result;
         }
     }
 }
