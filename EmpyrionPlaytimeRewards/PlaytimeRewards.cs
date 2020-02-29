@@ -65,7 +65,7 @@ namespace EmpyrionPlaytimeRewards
                 LogLevel = Configuration.Current.LogLevel;
                 ChatCommandManager.CommandPrefix = Configuration.Current.ChatCommandPrefix;
 
-                ChatCommands.Add(new ChatCommand(@"nav help", (I, A) => DisplayHelp(I.playerId), "display help"));
+                ChatCommands.Add(new ChatCommand(@"playtime help", (I, A) => DisplayHelp(I.playerId), "display help"));
 
                 TaskTools.Delay(1, () => Request_Player_List()
                     .GetAwaiter().GetResult()
