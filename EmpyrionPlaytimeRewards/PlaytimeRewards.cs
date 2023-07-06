@@ -67,10 +67,20 @@ namespace EmpyrionPlaytimeRewards
 
                 ChatCommands.Add(new ChatCommand(@"playtime help", (I, A) => DisplayHelp(I.playerId), "display help"));
 
-                TaskTools.Delay(1, () => Request_Player_List()
-                    .GetAwaiter().GetResult()
-                    .list
-                    .ForEach(AddTimerForPlayer));
+                TaskTools.Delay(10, () =>
+                {
+                    try
+                    {
+                        Request_Player_List()
+                            .GetAwaiter().GetResult()?
+                            .list
+                            .ForEach(AddTimerForPlayer);
+                    }
+                    catch (Exception firstInitError)
+                    {
+                        Log($"**EmpyrionPlaytimeRewards firstInitError: {firstInitError} {string.Join(" ", Environment.GetCommandLineArgs())}", LogLevel.Error);
+                    }
+                });
 
                 Event_Player_Connected    += P => AddTimerForPlayer(P.id);
                 Event_Player_Disconnected += P => { if (RewardTimers.TryRemove(P.id, out var timer)) timer.Stop(); };
